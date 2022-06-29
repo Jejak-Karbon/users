@@ -10,11 +10,14 @@ import (
 )
 
 type User struct {
+	ID       uint   	`gorm:"primarykey;autoIncrement"`
+	Name     string 	`json:"name" gorm:"size:200;not null"`
+	Email    string 	`json:"email" gorm:"size:200;not null;unique"`
+	Password string 	`json:"password,omitempty"`
+	Role	 string 	`json:"role" gorm:"size:1;not null"`
+	DistrictID	 uint 	`json:"district_id" not null"`
+	IsActive	 string `json:"is_active" gorm:"size:1;not null"`
 	Model
-
-	Name     string `json:"name" gorm:"size:200;not null"`
-	Email    string `json:"email" gorm:"size:200;not null;unique"`
-	Password string `json:"password,omitempty"`
 }
 
 // BeforeCreate is a method for struct User
