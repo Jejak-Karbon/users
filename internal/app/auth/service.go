@@ -44,7 +44,8 @@ func (s *service) Login(ctx context.Context, payload *dto.AuthLoginRequest) (*dt
 
 	result = &dto.AuthLoginResponse{
 		Token: token,
-		User:  *data,
+		Name : data.Name,
+		Email : data.Email,
 	}
 
 	return result, nil

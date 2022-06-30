@@ -1,7 +1,7 @@
 package dto
 
 import (
-	"github.com/born2ngopi/alterra/basic-echo-mvc/internal/model"
+	_ "github.com/born2ngopi/alterra/basic-echo-mvc/internal/model"
 )
 
 // Login
@@ -11,7 +11,8 @@ type AuthLoginRequest struct {
 }
 type AuthLoginResponse struct {
 	Token string `json:"token"`
-	model.User
+	Name  string `json:"name"`
+	Email string `json:"email"`
 }
 
 // Register
