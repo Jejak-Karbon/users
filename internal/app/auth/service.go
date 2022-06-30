@@ -1,7 +1,6 @@
 package auth
 
 import (
-	"fmt"
 	"context"
 
 	"github.com/born2ngopi/alterra/basic-echo-mvc/internal/dto"
@@ -34,11 +33,7 @@ func (s *service) Login(ctx context.Context, payload *dto.AuthLoginRequest) (*dt
 		return result, res.ErrorBuilder(&res.ErrorConstant.EmailOrPasswordIncorrect, err)
 	}
 
-	fmt.Println(data.Password)
-	fmt.Println(payload.Password)
-
 	if err = bcrypt.CompareHashAndPassword([]byte(data.Password), []byte(payload.Password)); err != nil {
-		fmt.Println(err)
 		return result, res.ErrorBuilder(&res.ErrorConstant.EmailOrPasswordIncorrect, err)
 	}
 
