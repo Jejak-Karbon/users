@@ -1,6 +1,7 @@
 package auth
 
 import (
+	"fmt"
 	"context"
 
 	"github.com/born2ngopi/alterra/basic-echo-mvc/internal/dto"
@@ -33,7 +34,11 @@ func (s *service) Login(ctx context.Context, payload *dto.AuthLoginRequest) (*dt
 		return result, res.ErrorBuilder(&res.ErrorConstant.EmailOrPasswordIncorrect, err)
 	}
 
+	fmt.Println(data.Password)
+	fmt.Println(payload.Password)
+
 	if err = bcrypt.CompareHashAndPassword([]byte(data.Password), []byte(payload.Password)); err != nil {
+		fmt.Println(err)
 		return result, res.ErrorBuilder(&res.ErrorConstant.EmailOrPasswordIncorrect, err)
 	}
 
@@ -52,14 +57,22 @@ func (s *service) Login(ctx context.Context, payload *dto.AuthLoginRequest) (*dt
 
 func (s *service) Register(ctx context.Context, payload *dto.AuthRegisterRequest) (*dto.AuthRegisterResponse, error) {
 	var result *dto.AuthRegisterResponse
+
 	var data model.User
-
-	// data.User = payload.UserEntity
-
-	// TODO create user
+	data.Name = payload.Name
+	data.Email = payload.Email
+	data.Password = payload.Password
+	data.Role = payload.Role
+	data.DistrictID = payload.DistrictID
 
 	result = &dto.AuthRegisterResponse{
-		User: data,
+		Name : payload.Name,
+		Email : payload.Email,
+	}
+
+	err := s.Repository.Create(ctx, data)
+	if err != nil {
+		return result, res.ErrorBuilder(&res.ErrorConstant.InternalServerError, err)
 	}
 
 	return result, nil

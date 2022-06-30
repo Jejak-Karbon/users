@@ -25,6 +25,7 @@ type User struct {
 func (u *User) BeforeCreate(tx *gorm.DB) (err error) {
 	u.CreatedAt = time.Now()
 	u.HashPassword()
+	u.IsActive = "0"
 	return
 }
 

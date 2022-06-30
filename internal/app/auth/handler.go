@@ -43,6 +43,7 @@ func (h *handler) Register(c echo.Context) error {
 	if err = c.Bind(payload); err != nil {
 		return res.ErrorBuilder(&res.ErrorConstant.BadRequest, err).Send(c)
 	}
+
 	if err = c.Validate(payload); err != nil {
 		return res.ErrorBuilder(&res.ErrorConstant.Validation, err).Send(c)
 	}
