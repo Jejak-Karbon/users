@@ -59,7 +59,7 @@ func (s *service) Register(ctx context.Context, payload *dto.AuthRegisterRequest
 	data.Email = payload.Email
 	data.Password = payload.Password
 	data.Role = payload.Role
-	data.DistrictID = payload.DistrictID
+	data.CityID = payload.CityID
 
 	result = &dto.AuthRegisterResponse{
 		Name : payload.Name,

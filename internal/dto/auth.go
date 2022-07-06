@@ -21,7 +21,7 @@ type AuthRegisterRequest struct {
 	Email    	string `json:"email" validate:"required,email"`
 	Password 	string `json:"password" validate:"required"`
 	Role    	string `json:"role" validate:"required"`
-	DistrictID  uint `json:"district_id" validate:"required"`
+	CityID  	string `json:"city_id" validate:"required"`
 }
 type AuthRegisterResponse struct {
 	Name  string `json:"name" `
