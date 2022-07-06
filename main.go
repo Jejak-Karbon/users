@@ -5,6 +5,7 @@ import (
 	"os"
 
 	"github.com/born2ngopi/alterra/basic-echo-mvc/database"
+	"github.com/born2ngopi/alterra/basic-echo-mvc/database/seeder"
 	"github.com/born2ngopi/alterra/basic-echo-mvc/database/migration"
 	"github.com/born2ngopi/alterra/basic-echo-mvc/internal/factory"
 	"github.com/born2ngopi/alterra/basic-echo-mvc/internal/http"
@@ -47,6 +48,9 @@ to use this flag:
 		return
 	} else if m == "status" {
 		migration.Status()
+		return
+	}else if m == "seeder" {
+		seeder.Seed()
 		return
 	}
 

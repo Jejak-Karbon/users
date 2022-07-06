@@ -1,7 +1,7 @@
 package model
 
 type City struct {
-	ID       uint   	`gorm:"primarykey;autoIncrement"`
+	ID       string   	`gorm:"primarykey;size:50;"`
 	Name     string 	`json:"name" gorm:"size:200;not null;"`
-	ProvinceID   uint 	`json:"province_id" gorm:"not null"`
+	ProvinceID   string 	`json:"province_id" gorm:"not null;size:50"`
 }
