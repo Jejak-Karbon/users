@@ -10,11 +10,14 @@ import (
 )
 
 type User struct {
+	ID       uint   	`gorm:"primarykey;autoIncrement"`
+	Name     string 	`json:"name" gorm:"size:200;not null"`
+	Email    string 	`json:"email" gorm:"size:200;not null;unique"`
+	Password string 	`json:"password,omitempty"`
+	Role	 string 	`json:"role" gorm:"size:1;not null"`
+	CityID	 string 	`json:"city_id"  gorm:"size:50;not null""`
+	IsActive	 string `json:"is_active" gorm:"size:1;not null"`
 	Model
-
-	Name     string `json:"name" gorm:"size:200;not null"`
-	Email    string `json:"email" gorm:"size:200;not null;unique"`
-	Password string `json:"password,omitempty"`
 }
 
 // BeforeCreate is a method for struct User
@@ -22,6 +25,7 @@ type User struct {
 func (u *User) BeforeCreate(tx *gorm.DB) (err error) {
 	u.CreatedAt = time.Now()
 	u.HashPassword()
+	u.IsActive = "0"
 	return
 }
 

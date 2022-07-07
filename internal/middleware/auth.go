@@ -11,6 +11,24 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
+func BasicAuth(next echo.HandlerFunc) echo.HandlerFunc {
+
+	var key = os.Getenv("RANDOM_KEY")
+
+	return func(c echo.Context) error {
+		authToken := c.Request().Header.Get("Authorization")
+		if authToken == "" {
+			return res.ErrorBuilder(&res.ErrorConstant.Unauthorized, nil).Send(c)
+		}
+		if key != authToken{
+			return res.ErrorBuilder(&res.ErrorConstant.Unauthorized, nil).Send(c)
+		}
+
+		return next(c)
+	}
+
+}
+
 func Authentication(next echo.HandlerFunc) echo.HandlerFunc {
 	var (
 		jwtKey = os.Getenv("JWT_KEY")

@@ -44,7 +44,8 @@ func (s *service) Login(ctx context.Context, payload *dto.AuthLoginRequest) (*dt
 
 	result = &dto.AuthLoginResponse{
 		Token: token,
-		User:  *data,
+		Name : data.Name,
+		Email : data.Email,
 	}
 
 	return result, nil
@@ -52,14 +53,22 @@ func (s *service) Login(ctx context.Context, payload *dto.AuthLoginRequest) (*dt
 
 func (s *service) Register(ctx context.Context, payload *dto.AuthRegisterRequest) (*dto.AuthRegisterResponse, error) {
 	var result *dto.AuthRegisterResponse
+
 	var data model.User
-
-	// data.User = payload.UserEntity
-
-	// TODO create user
+	data.Name = payload.Name
+	data.Email = payload.Email
+	data.Password = payload.Password
+	data.Role = payload.Role
+	data.CityID = payload.CityID
 
 	result = &dto.AuthRegisterResponse{
-		User: data,
+		Name : payload.Name,
+		Email : payload.Email,
+	}
+
+	err := s.Repository.Create(ctx, data)
+	if err != nil {
+		return result, res.ErrorBuilder(&res.ErrorConstant.InternalServerError, err)
 	}
 
 	return result, nil
