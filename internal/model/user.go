@@ -10,13 +10,13 @@ import (
 )
 
 type User struct {
-	ID       uint   	`gorm:"primarykey;autoIncrement"`
-	Name     string 	`json:"name" gorm:"size:200;not null"`
-	Email    string 	`json:"email" gorm:"size:200;not null;unique"`
-	Password string 	`json:"password,omitempty"`
-	Role	 string 	`json:"role" gorm:"size:1;not null"`
-	CityID	 string 	`json:"city_id"  gorm:"size:50;not null""`
-	IsActive	 string `json:"is_active" gorm:"size:1;not null"`
+	ID       uint   `gorm:"primarykey;autoIncrement"`
+	Name     string `json:"name" gorm:"size:200;not null"`
+	Email    string `json:"email" gorm:"size:200;not null;unique"`
+	Password string `json:"password,omitempty"`
+	Role     string `json:"role" gorm:"size:1;not null"`
+	CityID   string `json:"city_id"  gorm:"size:50;not null"`
+	IsActive string `json:"is_active" gorm:"size:1;not null"`
 	Model
 }
 
