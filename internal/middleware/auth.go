@@ -11,6 +11,26 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
+func GetIDFromToken(c echo.Context) interface{} {
+
+	var (
+		jwtKey = os.Getenv("JWT_KEY")
+	)
+
+	authToken := c.Request().Header.Get("Authorization")
+	splitToken := strings.Split(authToken, "Bearer ")
+	tokenString := splitToken[1]
+
+	claims := jwt.MapClaims{}
+
+	jwt.ParseWithClaims(tokenString, claims, func(token *jwt.Token) (interface{}, error) {
+		return []byte(jwtKey), nil
+	})
+
+	return claims["id"]
+
+}
+
 func BasicAuth(next echo.HandlerFunc) echo.HandlerFunc {
 
 	var key = os.Getenv("RANDOM_KEY")

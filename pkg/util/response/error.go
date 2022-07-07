@@ -40,6 +40,7 @@ type errorConstant struct {
 	Validation               Error
 	InternalServerError      Error
 	EmailOrPasswordIncorrect Error
+	OldPasswordIncorrect 	 Error
 	ConvertionNotFound       Error
 	NotEnoughStock           Error
 }
@@ -60,6 +61,16 @@ var ErrorConstant errorConstant = errorConstant{
 			Meta: Meta{
 				Success: false,
 				Message: "Email or password is incorrect",
+			},
+			Error: E_BAD_REQUEST,
+		},
+		Code: http.StatusBadRequest,
+	},
+	OldPasswordIncorrect: Error{
+		Response: errorResponse{
+			Meta: Meta{
+				Success: false,
+				Message: "Old password is incorrect",
 			},
 			Error: E_BAD_REQUEST,
 		},
