@@ -39,6 +39,7 @@ type errorConstant struct {
 	BadRequest               Error
 	Validation               Error
 	InternalServerError      Error
+	EmailDuplicate 			 Error
 	EmailOrPasswordIncorrect Error
 	OldPasswordIncorrect 	 Error
 	PasswordNotConfirm 	 	 Error
@@ -82,6 +83,16 @@ var ErrorConstant errorConstant = errorConstant{
 			Meta: Meta{
 				Success: false,
 				Message: "Password not mismatch with confirm password",
+			},
+			Error: E_BAD_REQUEST,
+		},
+		Code: http.StatusBadRequest,
+	},
+	EmailDuplicate: Error{
+		Response: errorResponse{
+			Meta: Meta{
+				Success: false,
+				Message: "Email Already Exist",
 			},
 			Error: E_BAD_REQUEST,
 		},

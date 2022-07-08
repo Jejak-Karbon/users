@@ -28,7 +28,6 @@ func NewService(f *factory.Factory) *service {
 
 func (s *service) Update(ctx context.Context, ID uint, payload *dto.UpdatePasswordRequest) (string, error) {
 
-	
 	//check is password == confirmation password
 	if payload.Password != payload.ConfirmPassword{
 		return "", res.ErrorBuilder(&res.ErrorConstant.PasswordNotConfirm, errors.New("passowrd not mismatch"))
