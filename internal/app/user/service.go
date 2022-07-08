@@ -1,6 +1,8 @@
 package user
 
 import (
+	"errors"
+	"fmt"
 	"context"
 
 	"github.com/born2ngopi/alterra/basic-echo-mvc/pkg/constant"
@@ -26,6 +28,12 @@ func NewService(f *factory.Factory) *service {
 
 func (s *service) Update(ctx context.Context, ID uint, payload *dto.UpdatePasswordRequest) (string, error) {
 
+	
+	//check is password == confirmation password
+	if payload.Password != payload.ConfirmPassword{
+		return "", res.ErrorBuilder(&res.ErrorConstant.PasswordNotConfirm, errors.New("passowrd not mismatch"))
+	}
+
 	// check old password
 	data_user, err := s.UserRepository.FindByID(ctx, ID)
 	if err != nil {
@@ -36,6 +44,7 @@ func (s *service) Update(ctx context.Context, ID uint, payload *dto.UpdatePasswo
 	}
 
 	if err = bcrypt.CompareHashAndPassword([]byte(data_user.Password), []byte(payload.OldPassword)); err != nil {
+		fmt.Println(&res.ErrorConstant.OldPasswordIncorrect)
 		return "", res.ErrorBuilder(&res.ErrorConstant.OldPasswordIncorrect, err)
 	}
 

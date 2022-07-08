@@ -41,6 +41,7 @@ type errorConstant struct {
 	InternalServerError      Error
 	EmailOrPasswordIncorrect Error
 	OldPasswordIncorrect 	 Error
+	PasswordNotConfirm 	 	 Error
 	ConvertionNotFound       Error
 	NotEnoughStock           Error
 }
@@ -71,6 +72,16 @@ var ErrorConstant errorConstant = errorConstant{
 			Meta: Meta{
 				Success: false,
 				Message: "Old password is incorrect",
+			},
+			Error: E_BAD_REQUEST,
+		},
+		Code: http.StatusBadRequest,
+	},
+	PasswordNotConfirm: Error{
+		Response: errorResponse{
+			Meta: Meta{
+				Success: false,
+				Message: "Password not mismatch with confirm password",
 			},
 			Error: E_BAD_REQUEST,
 		},

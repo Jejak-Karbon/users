@@ -23,6 +23,7 @@ type AuthRegisterRequest struct {
 	Role    	string `json:"role" validate:"required"`
 	CityID  	string `json:"city_id" validate:"required"`
 }
+
 type AuthRegisterResponse struct {
 	Name  string `json:"name" `
 	Email string `json:"email"`
