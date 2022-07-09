@@ -6,5 +6,6 @@ import (
 )
 
 func (h *handler) Route(g *echo.Group) {
+	g.GET("/:id", h.GetByID)
 	g.POST("/update-password", h.Update,middleware.Authentication)
 }

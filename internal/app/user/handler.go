@@ -1,6 +1,8 @@
 package user
 
 import (
+	"strconv"
+	
 	"github.com/born2ngopi/alterra/basic-echo-mvc/internal/dto"
 	"github.com/born2ngopi/alterra/basic-echo-mvc/internal/factory"
 	"github.com/born2ngopi/alterra/basic-echo-mvc/internal/middleware"
@@ -17,6 +19,17 @@ func NewHandler(f *factory.Factory) *handler {
 	return &handler{
 		service: NewService(f),
 	}
+}
+
+func (h *handler) GetByID(c echo.Context) error {
+
+	id,_:= strconv.Atoi(c.Param("id"))
+	result, err := h.service.FindByID(c.Request().Context(), uint(id))
+	if err != nil {
+		return res.ErrorResponse(err).Send(c)
+	}
+
+	return res.SuccessResponse(result).Send(c)
 }
 
 func (h *handler) Update(c echo.Context) error {

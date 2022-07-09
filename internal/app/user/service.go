@@ -20,10 +20,32 @@ type service struct {
 
 type Service interface {
 	Update(ctx context.Context, ID uint, payload *dto.UpdatePasswordRequest) (string, error)
+	FindByID(ctx context.Context, ID uint) (*dto.UserProfileResponse, error)
 }
 
 func NewService(f *factory.Factory) *service {
 	return &service{f.UserRepository}
+}
+
+func (s *service) FindByID(ctx context.Context, ID uint) (*dto.UserProfileResponse, error) {
+
+	data, err := s.UserRepository.FindByID(ctx, ID)
+	if err != nil {
+		if err == constant.RecordNotFound {
+			return nil, res.ErrorBuilder(&res.ErrorConstant.NotFound, err)
+		}
+		return nil, res.ErrorBuilder(&res.ErrorConstant.InternalServerError, err)
+	}
+
+	var result *dto.UserProfileResponse
+
+	result = &dto.UserProfileResponse{
+		Name : data.Name,
+		Email : data.Email,
+		CityID : data.CityID,
+	}
+
+	return result, nil
 }
 
 func (s *service) Update(ctx context.Context, ID uint, payload *dto.UpdatePasswordRequest) (string, error) {
