@@ -42,7 +42,7 @@ func (s *service) FindByID(ctx context.Context, ID uint) (*dto.UserProfileRespon
 	result = &dto.UserProfileResponse{
 		Name : data.Name,
 		Email : data.Email,
-		CityID : data.CityID,
+		CityID : data.City.Name,
 	}
 
 	return result, nil

@@ -29,7 +29,7 @@ func NewUser(db *gorm.DB) *user {
 
 func (r *user) FindByID(ctx context.Context, id uint) (*model.User, error) {
 	var data model.User
-	err := r.Db.WithContext(ctx).Where("id = ?", id).First(&data).Error
+	err := r.Db.WithContext(ctx).Where("id = ?", id).Preload("City").First(&data).Error
 	if err != nil {
 		return nil, err
 	}
