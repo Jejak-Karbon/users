@@ -1,13 +1,13 @@
 package aws
 
 import(
+	"os"
+
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/credentials"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/s3/s3manager"
 )
-
-var uploader *s3manager.Uploader
 
 func NewUploader() *s3manager.Uploader {
 	s3Config := &aws.Config{

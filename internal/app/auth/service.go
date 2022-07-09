@@ -1,15 +1,23 @@
 package auth
 
 import (
+	"os"
+	"bytes"
+	"io/ioutil"
+	"log"
 	"errors"
 	"context"
 
+	"github.com/aws/aws-sdk-go/aws"
+	"github.com/aws/aws-sdk-go/service/s3/s3manager"
 	"github.com/born2ngopi/alterra/basic-echo-mvc/internal/dto"
 	"github.com/born2ngopi/alterra/basic-echo-mvc/internal/factory"
 	"github.com/born2ngopi/alterra/basic-echo-mvc/internal/model"
 	"github.com/born2ngopi/alterra/basic-echo-mvc/pkg/constant"
 	"github.com/born2ngopi/alterra/basic-echo-mvc/internal/repository"
 	res "github.com/born2ngopi/alterra/basic-echo-mvc/pkg/util/response"
+	aws_util "github.com/born2ngopi/alterra/basic-echo-mvc/pkg/util/aws"
+	string "github.com/born2ngopi/alterra/basic-echo-mvc/pkg/util/str"
 
 	"golang.org/x/crypto/bcrypt"
 )
@@ -61,6 +69,29 @@ func (s *service) Register(ctx context.Context, payload *dto.AuthRegisterRequest
 	
 	if err != nil {
 		if err == constant.RecordNotFound {
+
+			// upload avatar if exist
+			var uploader *s3manager.Uploader
+			uploader = aws_util.NewUploader()
+			log.Printf("up %+v\n", uploader)
+
+			log.Println("uploading...")
+			file, err := ioutil.ReadFile("Soal.pdf")
+			if err != nil {
+				log.Fatal(err)
+			}
+
+			file_destination := "avatar/"+string.GenerateRandString(10)+".pdf"
+
+			upInput := &s3manager.UploadInput{
+				Bucket:      aws.String(os.Getenv("AWS_BUCKET")), // bucket's name
+				Key:         aws.String(file_destination),        // files destination location
+				Body:        bytes.NewReader(file),               // content of the file
+				ContentType: aws.String("file/pdf"),              // content type
+			}
+			resp, err := uploader.UploadWithContext(context.Background(), upInput)
+			log.Printf("res %+v\n", resp)
+			log.Printf("err %+v\n", err)
 			
 			var data model.User
 			data.Name = payload.Name
