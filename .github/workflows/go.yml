@@ -52,6 +52,7 @@ jobs:
           cd ~/apps/users
           git checkout development
           git pull
+          docker rm $(docker stop $(docker ps -a -q --filter ancestor=jejakkarbon/users --format="{{.ID}}"))
           docker build -t jejakkarbon/users .
           docker run --network="host" -d jejakkarbon/users:latest
 
