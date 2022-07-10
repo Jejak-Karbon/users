@@ -12,6 +12,10 @@ import (
 // please add new model in next index for consistency migrate and rollback
 var tables = []interface{}{
 	&model.User{},
+	&model.UserToken{},
+	&model.Province{},
+	&model.District{},
+	&model.City{},
 }
 
 func Migrate() {
