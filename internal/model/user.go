@@ -14,10 +14,12 @@ type User struct {
 	Name     string 	`json:"name" gorm:"size:200;not null"`
 	Email    string 	`json:"email" gorm:"size:200;not null;unique"`
 	Password string 	`json:"password,omitempty"`
+	Avatar   string 	`json:"avatar" gorm:"size:200;"`
 	Role	 string 	`json:"role" gorm:"size:1;not null"`
 	CityID	 string 	`json:"city_id"  gorm:"size:50;not null"`
 	IsActive	 string `json:"is_active" gorm:"size:1;not null"`
 	Model
+	City City
 }
 
 // BeforeCreate is a method for struct User
@@ -58,3 +60,5 @@ func (u *User) GenerateToken() (string, error) {
 	tokenString, err := token.SignedString([]byte(jwtKey))
 	return tokenString, err
 }
+
+

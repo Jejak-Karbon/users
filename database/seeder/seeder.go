@@ -6,7 +6,9 @@ func Seed() {
 
 	conn := database.GetConnection()
 
+	userTableSeeder(conn)
 	districtTableSeeder(conn)
 	cityTableSeeder(conn)
 	provinceTableSeeder(conn)
+
 }
