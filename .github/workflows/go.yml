@@ -1,0 +1,58 @@
+name: Go-CI/CD
+
+on:
+  push:
+    branches: [ "development" ]
+  pull_request:
+    branches: [ "development" ]
+
+jobs:
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Go
+      uses: actions/setup-go@v3
+      with:
+        go-version: 1.18
+    - name: Verify dependencies
+      run: go mod verify
+
+    - name: Build
+      run: go build -v ./...
+      
+    - name: Run go vet
+      run: go vet ./...
+      
+    - name: Install staticcheck
+      run: go install honnef.co/go/tools/cmd/staticcheck@latest
+
+    - name: Run staticcheck
+      run: staticcheck ./...
+
+    - name: Install golint
+      run: go install golang.org/x/lint/golint@latest
+
+    - name: Run golint
+      run: golint ./...
+
+    - name: Test
+      run: go test -race -vet=off ./...
+
+    - name: Deploy Go
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        username: ${{ secrets.SSH_USERNAME }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        port: ${{ secrets.SSH_PORT }}
+        script: |
+          cd ~/apps/users
+          git checkout development
+          git pull
+          docker rm $(docker stop $(docker ps -a -q --filter ancestor=jejakkarbon/users --format="{{.ID}}"))
+          docker build -t jejakkarbon/users .
+          docker run --network="host" -d jejakkarbon/users:latest
+

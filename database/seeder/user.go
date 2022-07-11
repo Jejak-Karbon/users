@@ -1,9 +1,10 @@
 package seeder
 
 import (
+	"log"
+
 	"github.com/born2ngopi/alterra/basic-echo-mvc/internal/model"
 	"gorm.io/gorm"
-	"log"
 )
 
 func userTableSeeder(conn *gorm.DB) {
